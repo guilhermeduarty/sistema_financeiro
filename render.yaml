@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: sistema-financeiro
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: sistema-financeiro-db
+          property: host
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_USER
+        fromDatabase:
+          name: sistema-financeiro-db
+          property: username
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sistema-financeiro-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: sistema-financeiro-db
+          property: database
+
+  - type: mysql
+    name: sistema-financeiro-db
+    plan: free
