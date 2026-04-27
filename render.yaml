@@ -11,25 +11,14 @@ services:
         value: 3000
       - key: SESSION_SECRET
         generateValue: true
+      # Configure estas variáveis manualmente após criar o banco
       - key: DB_HOST
-        fromDatabase:
-          name: sistema-financeiro-db
-          property: host
+        value: your-mysql-host
       - key: DB_PORT
         value: "3306"
       - key: DB_USER
-        fromDatabase:
-          name: sistema-financeiro-db
-          property: username
+        value: your-db-user
       - key: DB_PASSWORD
-        fromDatabase:
-          name: sistema-financeiro-db
-          property: password
+        value: your-db-password
       - key: DB_NAME
-        fromDatabase:
-          name: sistema-financeiro-db
-          property: database
-
-  - type: mysql
-    name: sistema-financeiro-db
-    plan: free
+        value: sistema_financeiro
