@@ -1,0 +1,59 @@
+<%- include("../partials/header", { title }) %>
+<section class="row justify-content-center align-items-center min-vh-100">
+  <div class="col-lg-10">
+    <div class="row g-0 auth-card shadow-lg overflow-hidden rounded-4">
+      <div class="col-lg-6 auth-hero p-5 d-flex flex-column justify-content-center">
+        <span class="badge bg-light text-primary fw-semibold mb-3">Controle Financeiro</span>
+        <h1 class="display-6 fw-bold text-white">Organize seu dinheiro com clareza.</h1>
+        <p class="text-white-50 mt-3 mb-0">
+          Cadastre receitas, despesas, categorias e acompanhe seu saldo em um dashboard simples e moderno.
+        </p>
+      </div>
+
+      <div class="col-lg-6 bg-white p-4 p-lg-5">
+        <h2 class="fw-bold mb-2">Entrar</h2>
+        <p class="text-muted mb-4">Acesse sua conta para acompanhar suas financas.</p>
+
+        <%- include("../partials/messages") %>
+
+        <form action="/login" method="POST" class="row g-3">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <div class="col-12">
+            <label for="email" class="form-label">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              value="<%= formData.email || '' %>"
+              placeholder="voce@exemplo.com"
+              required
+            />
+          </div>
+
+          <div class="col-12">
+            <label for="senha" class="form-label">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              class="form-control"
+              placeholder="Sua senha"
+              required
+            />
+          </div>
+
+          <div class="col-12 d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+          </div>
+        </form>
+
+        <p class="text-muted mt-4 mb-0">
+          Ainda nao tem conta?
+          <a href="/register" class="fw-semibold text-decoration-none">Criar conta</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include("../partials/footer") %>

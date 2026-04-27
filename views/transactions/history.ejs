@@ -1,0 +1,93 @@
+<%- include("../partials/header", { title }) %>
+<%- include("../partials/messages") %>
+
+<section class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">Historico de transacoes</h1>
+    <p class="text-muted mb-0">Consulte todas as movimentacoes e filtre por periodo.</p>
+  </div>
+  <a href="/transacoes/nova" class="btn btn-primary">Nova transacao</a>
+</section>
+
+<section class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form action="/historico" method="GET" class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label for="dataInicial" class="form-label">Data inicial</label>
+        <input
+          type="date"
+          id="dataInicial"
+          name="dataInicial"
+          class="form-control"
+          value="<%= filters.dataInicial || '' %>"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label for="dataFinal" class="form-label">Data final</label>
+        <input
+          type="date"
+          id="dataFinal"
+          name="dataFinal"
+          class="form-control"
+          value="<%= filters.dataFinal || '' %>"
+        />
+      </div>
+
+      <div class="col-md-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a href="/historico" class="btn btn-outline-secondary">Limpar</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="card border-0 shadow-sm">
+  <div class="card-body">
+    <% if (!transactions.length) { %>
+      <p class="text-muted mb-0">Nenhuma transacao encontrada para o periodo informado.</p>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Descricao</th>
+              <th>Categoria</th>
+              <th>Data</th>
+              <th>Valor</th>
+              <th class="text-end">Acoes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% transactions.forEach((transaction) => { %>
+              <tr>
+                <td>
+                  <span class="badge <%= transaction.tipo === 'receita' ? 'text-bg-success' : 'text-bg-danger' %>">
+                    <%= transaction.tipo %>
+                  </span>
+                </td>
+                <td><%= transaction.descricao %></td>
+                <td><%= transaction.categoria_nome || "Sem categoria" %></td>
+                <td><%= new Date(transaction.data).toLocaleDateString("pt-BR") %></td>
+                <td class="fw-semibold <%= transaction.tipo === 'receita' ? 'text-success' : 'text-danger' %>">
+                  <%= transaction.tipo === "receita" ? "+" : "-" %> R$ <%= Number(transaction.valor).toFixed(2) %>
+                </td>
+                <td class="text-end">
+                  <div class="d-inline-flex gap-2">
+                    <a href="/transacoes/<%= transaction.id %>/editar" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <form action="/transacoes/<%= transaction.id %>?_method=DELETE" method="POST">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Excluir</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</section>
+<%- include("../partials/footer") %>

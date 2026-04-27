@@ -1,0 +1,76 @@
+<%- include("../partials/header", { title }) %>
+<%- include("../partials/messages") %>
+
+<section class="row g-4">
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 fw-bold mb-3">Nova categoria</h1>
+        <form action="/categorias" method="POST" class="row g-3">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <div class="col-12">
+            <label for="nome" class="form-label">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              class="form-control"
+              placeholder="Ex.: Educacao"
+              required
+            />
+          </div>
+
+          <div class="col-12 d-grid">
+            <button type="submit" class="btn btn-primary">Adicionar categoria</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h2 class="h4 fw-bold mb-1">Categorias cadastradas</h2>
+            <p class="text-muted mb-0">Edite ou exclua as categorias vinculadas ao seu usuario.</p>
+          </div>
+        </div>
+
+        <% if (!categories.length) { %>
+          <p class="text-muted mb-0">Nenhuma categoria cadastrada.</p>
+        <% } else { %>
+          <div class="vstack gap-3">
+            <% categories.forEach((category) => { %>
+              <div class="category-item p-3 rounded-3">
+                <div class="row g-2 align-items-center">
+                  <div class="col-md-7">
+                    <form action="/categorias/<%= category.id %>?_method=PUT" method="POST" class="d-flex gap-2">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                      <input
+                        type="text"
+                        name="nome"
+                        class="form-control"
+                        value="<%= category.nome %>"
+                        required
+                      />
+                      <button type="submit" class="btn btn-outline-primary">Salvar</button>
+                    </form>
+                  </div>
+                  <div class="col-md-5 d-flex gap-2 justify-content-md-end">
+                    <form action="/categorias/<%= category.id %>?_method=DELETE" method="POST">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                      <button type="submit" class="btn btn-outline-danger">Excluir</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include("../partials/footer") %>
